@@ -68,7 +68,7 @@ const add_order = (id_sandwich, extras, res) => {
 		return res.status(400).send('Invalid id')
 	}
 
-	extras = extras ? JSON.parse(extras) : []
+	extras = extras ? JSON.parse(JSON.stringify(extras)) : []
 	let [last_id] = Object.keys(orders).slice(-1)
 	let id = last_id ? parseInt(last_id) + 1 : 1
 	let order = {id, id_sandwich, extras, date: new Date().getTime()}
