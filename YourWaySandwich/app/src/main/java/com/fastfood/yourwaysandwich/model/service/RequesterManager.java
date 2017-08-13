@@ -1,10 +1,5 @@
 package com.fastfood.yourwaysandwich.model.service;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fastfood.yourwaysandwich.model.Ingredient;
@@ -13,7 +8,6 @@ import com.fastfood.yourwaysandwich.model.Promotion;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.YourWayMobileApi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -24,37 +18,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequesterService extends Service implements OnRequestQueueListener {
+public class RequesterManager implements YourWayApi, OnRequestQueueListener {
 
-    private String LOG_TAG = "RequesterService";
+    private String LOG_TAG = "RequesterManager";
 
-    private Binder mYourWayBinder = new YourWayBinder();
-
-    private List<ResponseListener> mListeners = new ArrayList<>();
+    private ResponseListener mListener = null;
 
     private Request mCurrentRequest = null;
 
     private RequestQueue mRequestQueue = null;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(LOG_TAG, "OnBind");
+    public RequesterManager(ResponseListener responseListener) {
         mRequestQueue = new RequestQueue(this);
-        return mYourWayBinder;
+        mListener = responseListener;
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Log.d(LOG_TAG, "OnUnbind");
+    public void tearDown() {
         mRequestQueue.clearQueue();
         mRequestQueue = null;
-        return super.onUnbind(intent);
+        mListener = null;
     }
 
     @Override
@@ -84,38 +66,38 @@ public class RequesterService extends Service implements OnRequestQueueListener 
 
             switch (mCurrentRequest.getType()) {
                 case GET_MENU:
-                    getMenu();
+                    getMenuImpl();
                     break;
                 case GET_SANDWICH_INGREDIENTS:
                     sandwichId = ((SandwichIngredientsRequest)
                             mCurrentRequest).getSandwichId();
-                    getSandwichIngredients(sandwichId);
+                    getSandwichIngredientsImpl(sandwichId);
                     break;
                 case GET_SANDWICH_DETAILS:
                     sandwichId = ((SandwichDetailsRequest)
                             mCurrentRequest).getSandwichId();
-                    getSandwichDetails(sandwichId);
+                    getSandwichDetailsImpl(sandwichId);
                     break;
                 case GET_AVAILABLE_INGREDIENTS:
-                    getAvailableIngredients();
+                    getAvailableIngredientsImpl();
                     break;
                 case ORDER_SANDWICH:
                     sandwichId = ((OrderSandwichRequest)
                             mCurrentRequest).getSandwichId();
-                    orderSandwich(sandwichId);
+                    orderSandwichImpl(sandwichId);
                     break;
                 case ORDER_CUSTOM_SANDWICH:
                     sandwichId = ((OrderCustomSandwichRequest)
                             mCurrentRequest).getSandwichId();
                     extras = ((OrderCustomSandwichRequest)
                             mCurrentRequest).getExtras();
-                    orderCustomSandwich(sandwichId, extras);
+                    orderCustomSandwichImpl(sandwichId, extras);
                     break;
                 case GET_PROMOTIONS:
-                    getPromotions();
+                    getPromotionsImpl();
                     break;
                 case GET_CART:
-                    getCart();
+                    getCartImpl();
                     break;
                 default:
                     Log.d(LOG_TAG, "Unknown request type");
@@ -123,72 +105,52 @@ public class RequesterService extends Service implements OnRequestQueueListener 
         }
     }
 
-    /**
-     * Binder responsible for exposing the Your Way API to the client bound to it.
-     */
-    public class YourWayBinder extends Binder implements YourWayApi {
+    @Override
+    public void getMenu() {
+        Log.d(LOG_TAG, "getMenu called from client");
+        mRequestQueue.queueRequest(new Request(RequestType.GET_MENU));
+    }
 
-        @Override
-        public void getMenu() {
-            Log.d(LOG_TAG, "getMenu called from client");
-            mRequestQueue.queueRequest(new Request(RequestType.GET_MENU));
-        }
+    @Override
+    public void getSandwichIngredients(int sandwichId) {
+        Log.d(LOG_TAG, "getSandwichIngredients called from client");
+        mRequestQueue.queueRequest(new SandwichIngredientsRequest(sandwichId));
+    }
 
-        @Override
-        public void getSandwichIngredients(int sandwichId) {
-            Log.d(LOG_TAG, "getSandwichIngredients called from client");
-            mRequestQueue.queueRequest(new SandwichIngredientsRequest(sandwichId));
-        }
+    @Override
+    public void getSandwichDetails(int sandwichId) {
+        Log.d(LOG_TAG, "getSandwichDetails called from client");
+        mRequestQueue.queueRequest(new SandwichDetailsRequest(sandwichId));
+    }
 
-        @Override
-        public void getSandwichDetails(int sandwichId) {
-            Log.d(LOG_TAG, "getSandwichDetails called from client");
-            mRequestQueue.queueRequest(new SandwichDetailsRequest(sandwichId));
-        }
+    @Override
+    public void getAvailableIngredients() {
+        Log.d(LOG_TAG, "getAvailableIngredients called from client");
+        mRequestQueue.queueRequest(new Request(RequestType.GET_AVAILABLE_INGREDIENTS));
+    }
 
-        @Override
-        public void getAvailableIngredients() {
-            Log.d(LOG_TAG, "getAvailableIngredients called from client");
-            mRequestQueue.queueRequest(new Request(RequestType.GET_AVAILABLE_INGREDIENTS));
-        }
+    @Override
+    public void orderSandwich(int sandwichId) {
+        Log.d(LOG_TAG, "orderSandwich called from client");
+        mRequestQueue.queueRequest(new OrderSandwichRequest(sandwichId));
+    }
 
-        @Override
-        public void orderSandwich(int sandwichId) {
-            Log.d(LOG_TAG, "orderSandwich called from client");
-            mRequestQueue.queueRequest(new OrderSandwichRequest(sandwichId));
-        }
+    @Override
+    public void orderCustomSandwich(int sandwichId, int[] extras) {
+        Log.d(LOG_TAG, "orderCustomSandwich called from client");
+        mRequestQueue.queueRequest(new OrderCustomSandwichRequest(sandwichId, extras));
+    }
 
-        @Override
-        public void orderCustomSandwich(int sandwichId, int[] extras) {
-            Log.d(LOG_TAG, "orderCustomSandwich called from client");
-            mRequestQueue.queueRequest(new OrderCustomSandwichRequest(sandwichId, extras));
-        }
+    @Override
+    public void getPromotions() {
+        Log.d(LOG_TAG, "getPromotions called from client");
+        mRequestQueue.queueRequest(new Request(RequestType.GET_PROMOTIONS));
+    }
 
-        @Override
-        public void getPromotions() {
-            Log.d(LOG_TAG, "getPromotions called from client");
-            mRequestQueue.queueRequest(new Request(RequestType.GET_PROMOTIONS));
-        }
-
-        @Override
-        public void getCart() {
-            Log.d(LOG_TAG, "getCart called from client");
-            mRequestQueue.queueRequest(new Request(RequestType.GET_CART));
-        }
-
-        @Override
-        public void registerResponseListener(ResponseListener listener) {
-            Log.d(LOG_TAG, "registerResponseListener called from client");
-            if (!mListeners.contains(listener)) {
-                mListeners.add(listener);
-            }
-        }
-
-        @Override
-        public void unregisterResponseListener(ResponseListener listener) {
-            Log.d(LOG_TAG, "unregisterResponseListener called from client");
-            mListeners.remove(listener);
-        }
+    @Override
+    public void getCart() {
+        Log.d(LOG_TAG, "getCart called from client");
+        mRequestQueue.queueRequest(new Request(RequestType.GET_CART));
     }
 
     /**
@@ -199,14 +161,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
      * @param content An object containing the payload content of the response, it should be casted
      *                by the listener to the proper Object kind, depending on the response type.
      */
-    void notifyListeners(ResponseType type, Object content) {
-        Log.d(LOG_TAG, "notifyListeners");
+    void notifyListener(ResponseType type, Object content) {
+        Log.d(LOG_TAG, "notifyListener");
         mCurrentRequest = null;
 
-        if (!mListeners.isEmpty()) {
-            for (ResponseListener listener : mListeners) {
-                listener.onResponse(type, content);
-            }
+        if (mListener != null) {
+            mListener.onResponse(type, content);
         }
         processQueue();
     }
@@ -220,7 +180,7 @@ public class RequesterService extends Service implements OnRequestQueueListener 
         return retrofit.create(YourWayMobileApi.class);
     }
 
-    private void getMenu() {
+    private void getMenuImpl() {
         Call<List<Sandwich>> call = getMobileApiAccess().getMenu();
         call.enqueue(new Callback<List<Sandwich>>() {
             @Override
@@ -231,20 +191,20 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                         List<Sandwich> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
-                                notifyListeners(ResponseType.MENU, resp);
+                                notifyListener(ResponseType.MENU, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -252,12 +212,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<List<Sandwich>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void getSandwichIngredients(int sandwichId) {
+    private void getSandwichIngredientsImpl(int sandwichId) {
         Call<List<Ingredient>> call = getMobileApiAccess().getSandwichIngredients(sandwichId);
         call.enqueue(new Callback<List<Ingredient>>() {
             @Override
@@ -268,20 +228,20 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                         List<Ingredient> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
-                                notifyListeners(ResponseType.SANDWICH_INGREDIENTS, resp);
+                                notifyListener(ResponseType.SANDWICH_INGREDIENTS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -289,12 +249,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void getSandwichDetails(int sandwichId) {
+    private void getSandwichDetailsImpl(int sandwichId) {
         Call<Sandwich> call = getMobileApiAccess().getSandwichDetails(sandwichId);
         call.enqueue(new Callback<Sandwich>() {
             @Override
@@ -304,16 +264,16 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                     case HttpsURLConnection.HTTP_OK:
                         Sandwich resp = response.body();
                         if (resp != null) {
-                            notifyListeners(ResponseType.SANDWICH_DETAILS, resp);
+                            notifyListener(ResponseType.SANDWICH_DETAILS, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -321,12 +281,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<Sandwich> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void getAvailableIngredients() {
+    private void getAvailableIngredientsImpl() {
         Call<List<Ingredient>> call = getMobileApiAccess().getAvailableIngredients();
         call.enqueue(new Callback<List<Ingredient>>() {
             @Override
@@ -337,20 +297,20 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                         List<Ingredient> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
-                                notifyListeners(ResponseType.AVAILABLE_INGREDIENTS, resp);
+                                notifyListener(ResponseType.AVAILABLE_INGREDIENTS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -358,12 +318,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void orderSandwich(int sandwichId) {
+    private void orderSandwichImpl(int sandwichId) {
         Call<OrderedItem> call = getMobileApiAccess().orderSandwich(sandwichId);
         call.enqueue(new Callback<OrderedItem>() {
             @Override
@@ -373,16 +333,16 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                     case HttpsURLConnection.HTTP_OK:
                         OrderedItem resp = response.body();
                         if (resp != null) {
-                            notifyListeners(ResponseType.ORDERED_SANDWICH, resp);
+                            notifyListener(ResponseType.ORDERED_SANDWICH, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -390,12 +350,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<OrderedItem> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void orderCustomSandwich(int sandwichId, int[] extras) {
+    private void orderCustomSandwichImpl(int sandwichId, int[] extras) {
         Call<OrderedItem> call = getMobileApiAccess().orderCustomSandwich(sandwichId, extras);
         call.enqueue(new Callback<OrderedItem>() {
             @Override
@@ -405,16 +365,16 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                     case HttpsURLConnection.HTTP_OK:
                         OrderedItem resp = response.body();
                         if (resp != null) {
-                            notifyListeners(ResponseType.ORDERED_CUSTOM_SANDWICH, resp);
+                            notifyListener(ResponseType.ORDERED_CUSTOM_SANDWICH, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -422,12 +382,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<OrderedItem> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void getPromotions() {
+    private void getPromotionsImpl() {
         Call<List<Promotion>> call = getMobileApiAccess().getPromotions();
         call.enqueue(new Callback<List<Promotion>>() {
             @Override
@@ -438,20 +398,20 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                         List<Promotion> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
-                                notifyListeners(ResponseType.PROMOTIONS, resp);
+                                notifyListener(ResponseType.PROMOTIONS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -459,12 +419,12 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<List<Promotion>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
 
-    private void getCart() {
+    private void getCartImpl() {
         Call<List<Sandwich>> call = getMobileApiAccess().getCart();
         call.enqueue(new Callback<List<Sandwich>>() {
             @Override
@@ -475,20 +435,20 @@ public class RequesterService extends Service implements OnRequestQueueListener 
                         List<Sandwich> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
-                                notifyListeners(ResponseType.CART, resp);
+                                notifyListener(ResponseType.CART, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListeners(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -496,7 +456,7 @@ public class RequesterService extends Service implements OnRequestQueueListener 
             public void onFailure(Call<List<Sandwich>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListeners(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }

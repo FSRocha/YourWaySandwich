@@ -55,14 +55,4 @@ interface YourWayApi {
      */
     void getCart();
 
-
-    /**
-     * Register a listener for request responses
-     */
-    void registerResponseListener(ResponseListener listener);
-
-    /**
-     * Unregister the listener for request responses
-     */
-    void unregisterResponseListener(ResponseListener listener);
 }

@@ -3,7 +3,7 @@ package com.fastfood.yourwaysandwich.model.service;
 /**
  * Types of responses expected when calling Your Way API services
  */
-enum ResponseType {
+public enum ResponseType {
 
     MENU,
     SANDWICH_INGREDIENTS,
