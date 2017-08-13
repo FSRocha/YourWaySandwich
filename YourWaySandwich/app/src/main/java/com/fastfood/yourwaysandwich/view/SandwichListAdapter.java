@@ -12,6 +12,7 @@ import com.fastfood.yourwaysandwich.R;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class SandwichListAdapter extends BaseAdapter {
 
@@ -21,6 +22,11 @@ class SandwichListAdapter extends BaseAdapter {
     SandwichListAdapter(Context context, ArrayList<Sandwich> list) {
         mSandwichList = list;
         mLayoutInflater = LayoutInflater.from(context);
+    }
+
+    void updateList(List<Sandwich> newList) {
+        mSandwichList = new ArrayList<>(newList);
+        this.notifyDataSetChanged();
     }
 
     @Override

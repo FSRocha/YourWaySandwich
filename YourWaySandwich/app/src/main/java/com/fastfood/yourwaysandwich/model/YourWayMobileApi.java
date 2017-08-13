@@ -13,30 +13,30 @@ import retrofit2.http.Query;
  */
 public interface YourWayMobileApi {
 
-    String ENDPOINT = "http://localhost:8080/api";
+    String ENDPOINT = "http://10.0.2.2:8080";
 
-    @GET("/lanche")
+    @GET("/api/lanche")
     Call<List<Sandwich>> getMenu();
 
-    @GET("/ingrediente/de")
+    @GET("/api/ingrediente/de")
     Call<List<Ingredient>> getSandwichIngredients(@Query("id_lanche") int sandwichId);
 
-    @GET("/lanche")
+    @GET("/api/lanche")
     Call<Sandwich> getSandwichDetails(@Query("id_lanche") int sandwichId);
 
-    @GET("/ingrediente")
+    @GET("/api/ingrediente")
     Call<List<Ingredient>> getAvailableIngredients();
 
-    @PUT("/pedido")
+    @PUT("/api/pedido")
     Call<OrderedItem> orderSandwich(@Query("id_lanche") int sandwichId);
 
-    @PUT("/pedido")
+    @PUT("/api/pedido")
     Call<OrderedItem> orderCustomSandwich(@Query("id_lanche") int sandwichId, @Body int[] extras);
 
-    @GET("/promocao")
+    @GET("/api/promocao")
     Call<List<Promotion>> getPromotions();
 
-    @GET("/pedido")
+    @GET("/api/pedido")
     Call<List<Sandwich>> getCart();
 
 }

@@ -32,6 +32,7 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
         mContext = ctx;
         mRequester = new RequesterManager(this);
         mRequester.getMenu();
+        mRequester.getAvailableIngredients();
     }
 
     @Override
@@ -51,6 +52,8 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
                     mCallbacks.onError(mContext.getString(R.string.general_error_title),
                             mContext.getString(R.string.invalid_response_error_msg));
                 }
+                break;
+            case AVAILABLE_INGREDIENTS:
                 break;
             default:
                 Log.e(LOG_TAG, "Unexpected response");
