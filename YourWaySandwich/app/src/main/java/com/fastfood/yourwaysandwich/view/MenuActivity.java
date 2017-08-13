@@ -1,26 +1,28 @@
 package com.fastfood.yourwaysandwich.view;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.fastfood.yourwaysandwich.R;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.presenter.MenuCallbacks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity implements MenuCallbacks {
+
+    private ListView mListView;
+    private SandwichListAdapter mListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        mListView = (ListView) findViewById(R.id.sandwich_list);
+        mListAdapter = new SandwichListAdapter(this, new ArrayList<Sandwich>());
+        mListView.setAdapter(mListAdapter);
     }
 
     @Override

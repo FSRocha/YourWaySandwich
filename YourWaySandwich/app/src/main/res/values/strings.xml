@@ -2,4 +2,7 @@
     <string name="app_name">Your Way Sandwich</string>
     <string name="general_error_title">Erro</string>
     <string name="invalid_response_error_msg">Resposta inválida</string>
+    <string name="menu_title">Cardápio</string>
+    <string name="promotions_button_txt">Promoções</string>
+    <string name="cart_button_txt">Pedido</string>
 </resources>
