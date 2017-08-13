@@ -1,8 +1,8 @@
-package com.fastfood.yourwaysandwich.Model;
+package com.fastfood.yourwaysandwich.model;
 
 import java.util.List;
 
-class OrderedItem {
+public class OrderedItem {
 
     public int id;
     public int id_sandwich;

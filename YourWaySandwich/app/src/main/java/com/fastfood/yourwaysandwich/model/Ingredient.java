@@ -1,6 +1,6 @@
-package com.fastfood.yourwaysandwich.Model;
+package com.fastfood.yourwaysandwich.model;
 
-class Ingredient {
+public class Ingredient {
     public int  id;
     public String name;
     public float price;

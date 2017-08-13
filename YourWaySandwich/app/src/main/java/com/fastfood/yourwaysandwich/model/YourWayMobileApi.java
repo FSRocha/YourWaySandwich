@@ -1,4 +1,4 @@
-package com.fastfood.yourwaysandwich.Model;
+package com.fastfood.yourwaysandwich.model;
 
 import java.util.List;
 
@@ -31,10 +31,10 @@ public interface YourWayMobileApi {
     Call<OrderedItem> orderSandwich(@Query("id_lanche") int sandwichId);
 
     @PUT("/pedido")
-    Call<Boolean> orderCustSandwich(@Query("id_lanche") int sandwichId, @Body int[] extras);
+    Call<OrderedItem> orderCustomSandwich(@Query("id_lanche") int sandwichId, @Body int[] extras);
 
     @GET("/promocao")
-    Call<List<String>> getPromotions();
+    Call<List<Promotion>> getPromotions();
 
     @GET("/pedido")
     Call<List<Sandwich>> getCart();

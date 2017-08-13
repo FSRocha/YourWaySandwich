@@ -1,4 +1,4 @@
-package com.fastfood.yourwaysandwich.View;
+package com.fastfood.yourwaysandwich.view;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
