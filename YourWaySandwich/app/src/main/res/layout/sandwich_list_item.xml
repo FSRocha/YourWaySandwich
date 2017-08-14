@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/card_background"
     android:orientation="horizontal"
-    android:layout_margin="2dp"
+    android:padding="3dp"
     android:weightSum="3">
 
     <ImageView
@@ -13,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="2"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,9 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginBottom="2dp"
             android:background="@color/card_details_background"
             android:orientation="horizontal"
-            android:layout_margin="1dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
             android:weightSum="3">
 
             <TextView
@@ -42,9 +46,9 @@
                 android:id="@+id/sandwich_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="1dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:layout_margin="1dp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 
@@ -54,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/card_top_panel"
             android:background="@color/card_details_background"
-            android:padding="1dp" />
+            android:paddingBottom="1dp" />
 
         <ImageView
             android:id="@+id/extra_batch_img"
@@ -63,9 +67,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="3dp"
-            android:src="@mipmap/extra_batch_110" />
+            android:src="@mipmap/extra_batch_110"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
-
-
 </LinearLayout>

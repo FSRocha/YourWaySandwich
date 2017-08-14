@@ -67,10 +67,30 @@ class PromotionsCalculator {
         return 0;
     }
 
+    private String getIngredientName(int ingredientId) {
+        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        for (Ingredient ingredient : availableIngredients) {
+            if (ingredient.getId() == ingredientId) {
+                return ingredient.getName();
+            }
+        }
+        return "";
+    }
+
     String buildIngredientsList(List<Integer> ingredients, List<Integer> extras) {
         List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
         if (availableIngredients != null && !availableIngredients.isEmpty()) {
-
+            StringBuilder list = new StringBuilder();
+            List<Integer> allIngredients = new ArrayList<>(ingredients);
+            allIngredients.addAll(extras);
+            for (int i = 0; i < allIngredients.size(); i++) {
+                if (i < allIngredients.size() - 1) {
+                    list.append(getIngredientName(allIngredients.get(i)) + ", ");
+                } else {
+                    list.append(getIngredientName(allIngredients.get(i)));
+                }
+            }
+            return String.valueOf(list);
         }
         return "";
     }
@@ -94,7 +114,7 @@ class PromotionsCalculator {
     }
 
     private float calculateDiscountPerPortions(List<Integer> allIngredients, String portionName,
-                                             int portionsPerDiscount) {
+                                               int portionsPerDiscount) {
         List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
         int portionId = -1;
         float portionPrice = -1;
