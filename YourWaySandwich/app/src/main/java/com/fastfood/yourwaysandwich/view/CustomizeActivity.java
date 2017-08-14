@@ -3,6 +3,8 @@ package com.fastfood.yourwaysandwich.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,10 +15,11 @@ import com.fastfood.yourwaysandwich.presenter.CustomizeCallbacks;
 import com.fastfood.yourwaysandwich.presenter.CustomizeOperations;
 import com.fastfood.yourwaysandwich.presenter.CustomizePresenter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CustomizeActivity extends AppCompatActivity implements CustomizeCallbacks {
+public class CustomizeActivity extends AppCompatActivity implements CustomizeCallbacks,
+        ExtraIngredientListener {
 
     private IngredientListAdapter mListAdapter;
     private CustomizeOperations mCustomizePresenter;
@@ -26,15 +29,24 @@ public class CustomizeActivity extends AppCompatActivity implements CustomizeCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customize);
         ListView mListView = (ListView) findViewById(R.id.ingredients_list);
-        mListAdapter = new IngredientListAdapter(this, new ArrayList<Ingredient>());
+        mListAdapter = new IngredientListAdapter(this, new HashMap<Ingredient, Integer>(), this);
         mListView.setAdapter(mListAdapter);
         mCustomizePresenter = new CustomizePresenter();
         mCustomizePresenter.createCustomize(ApplicationGlobal.getInstance(),
-                ApplicationGlobal.getInstance(), this, this);
+                ApplicationGlobal.getInstance(), this);
+        Button addExtrasButton = (Button) findViewById(R.id.add_extras_button);
+        addExtrasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCustomizePresenter != null) {
+                    mCustomizePresenter.addExtras();
+                }
+            }
+        });
     }
 
     @Override
-    public void onShowIngredientsList(List<Ingredient> ingredientList) {
+    public void onShowIngredientsList(Map<Ingredient, Integer> ingredientList) {
         mListAdapter.updateList(ingredientList);
     }
 
@@ -49,5 +61,19 @@ public class CustomizeActivity extends AppCompatActivity implements CustomizeCal
         Intent detailsActivity = new Intent(this, DetailsActivity.class);
         detailsActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(detailsActivity);
+    }
+
+    @Override
+    public void addExtra(Ingredient ingredient) {
+        if (mCustomizePresenter != null) {
+            mCustomizePresenter.addExtraIngredient(ingredient);
+        }
+    }
+
+    @Override
+    public void removeExtra(Ingredient ingredient) {
+        if (mCustomizePresenter != null) {
+            mCustomizePresenter.removeExtraIngredient(ingredient);
+        }
     }
 }

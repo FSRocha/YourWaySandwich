@@ -2,7 +2,6 @@ package com.fastfood.yourwaysandwich.presenter;
 
 import android.content.Context;
 
-import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.SelectedSandwichProvider;
 
 public interface DetailsOperations {
