@@ -10,9 +10,13 @@
     <string name="order_sandwich_error_message">Falha salvando pedido</string>
     <string name="order_success_msg">Lanche adicionado ao carrinho!</string>
     <string name="order_button_txt">Pedir</string>
-    <string name="add_extras_button_txt">Customizar</string>
+    <string name="customize_button_txt">Customizar</string>
     <string name="promotions_error_msg">Falha ao receber as promoções</string>
     <string name="cart_error_msg">Falha ao consultar pedido</string>
     <string name="car_title">Lista de pedidos</string>
     <string name="total_txt">TOTAL</string>
+    <string name="extras_added_success_msg">Novos ingredientes adicionados!!</string>
+    <string name="add_extras_button_txt">Adicionar</string>
+    <string name="add_button_txt">+</string>
+    <string name="remove_button_txt">-</string>
 </resources>

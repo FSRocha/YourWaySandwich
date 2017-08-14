@@ -87,7 +87,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsCallbac
 
     @Override
     public void onCustomizeSelected() {
-
+        Intent customizeActivity = new Intent(this, CustomizeActivity.class);
+        startActivity(customizeActivity);
     }
 
     @Override

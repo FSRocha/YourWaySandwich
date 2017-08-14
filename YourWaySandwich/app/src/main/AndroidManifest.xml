@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fastfood.yourwaysandwich">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,16 +23,15 @@
         </activity>
         <activity
             android:name=".view.DetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.PromotionsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.CartActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.CustomizeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 </manifest>

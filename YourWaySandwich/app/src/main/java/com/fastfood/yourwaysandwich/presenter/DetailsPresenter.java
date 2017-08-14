@@ -61,17 +61,7 @@ public class DetailsPresenter implements DetailsOperations, ResponseListener {
 
     @Override
     public void customizeSandwich() {
-
-    }
-
-    @Override
-    public void addExtraIngredients(int[] extras) {
-
-    }
-
-    @Override
-    public void removeExtraIngredients(int[] extras) {
-
+        mCallbacks.onCustomizeSelected();
     }
 
     @Override
