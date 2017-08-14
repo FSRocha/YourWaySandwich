@@ -75,12 +75,7 @@ public class DetailsPresenter implements DetailsOperations, ResponseListener {
         switch (type) {
             case ORDERED_SANDWICH:
             case ORDERED_CUSTOM_SANDWICH:
-                try {
-                    mCallbacks.onSandwichOrdered();
-                } catch (ClassCastException e) {
-                    mCallbacks.onError(mContext.getString(R.string.general_error_title),
-                            mContext.getString(R.string.order_sandwich_error_message));
-                }
+                mCallbacks.onSandwichOrdered();
                 break;
             case ORDERED_SANDWICH_ERROR:
             case ORDERED_CUSTOM_SANDWICH_ERROR:

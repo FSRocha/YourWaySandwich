@@ -11,4 +11,5 @@
     <string name="order_success_msg">Lanche adicionado ao carrinho!</string>
     <string name="order_button_txt">Pedir</string>
     <string name="add_extras_button_txt">Customizar</string>
+    <string name="promotions_error_msg">Falha ao receber as promoções</string>
 </resources>

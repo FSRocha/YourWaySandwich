@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +36,16 @@ public class MenuActivity extends AppCompatActivity implements MenuCallbacks,
         mListView.setOnItemClickListener(this);
         mMenuPresenter = new MenuPresenter();
         mMenuPresenter.createMenu(ApplicationGlobal.getInstance(), this, this);
+        Button promotionsButton = (Button) findViewById(R.id.promotions_button);
+        promotionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMenuPresenter != null) {
+                    mMenuPresenter.selectPromotions();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -60,6 +71,12 @@ public class MenuActivity extends AppCompatActivity implements MenuCallbacks,
     public void onSandwichSelected() {
         Intent detailsActivity = new Intent(this, DetailsActivity.class);
         startActivity(detailsActivity);
+    }
+
+    @Override
+    public void onPromotionsSelected() {
+        Intent promotionsActivity = new Intent(MenuActivity.this, PromotionsActivity.class);
+        startActivity(promotionsActivity);
     }
 
     @Override

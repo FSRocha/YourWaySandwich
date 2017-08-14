@@ -56,6 +56,11 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
     }
 
     @Override
+    public void selectPromotions() {
+        mCallbacks.onPromotionsSelected();
+    }
+
+    @Override
     public void onResponse(ResponseType type, Object content) {
         switch (type) {
             case MENU:

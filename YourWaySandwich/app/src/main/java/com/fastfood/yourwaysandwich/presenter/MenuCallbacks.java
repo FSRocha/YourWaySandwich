@@ -11,4 +11,6 @@ public interface MenuCallbacks {
     void onError(String errorTitle, String errorMsg);
 
     void onSandwichSelected();
+
+    void onPromotionsSelected();
 }

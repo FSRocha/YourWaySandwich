@@ -13,4 +13,6 @@ public interface MenuOperations {
     void destroyMenu();
 
     void selectSandwich(Sandwich sandwichId);
+
+    void selectPromotions();
 }
