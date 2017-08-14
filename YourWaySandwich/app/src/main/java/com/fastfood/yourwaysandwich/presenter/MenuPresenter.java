@@ -11,6 +11,7 @@ import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.service.RequesterManager;
 import com.fastfood.yourwaysandwich.model.service.ResponseListener;
 import com.fastfood.yourwaysandwich.model.service.ResponseType;
+import com.fastfood.yourwaysandwich.model.service.SandwichDetailsProvider;
 
 import java.util.List;
 
@@ -26,14 +27,17 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
     private RequesterManager mRequester;
     private Context mContext;
     private AvailableIngredientsProvider mIngredientsProvider;
+    private SandwichDetailsProvider mSandwichDetailsProvider;
 
     @Override
     public void createMenu(AvailableIngredientsProvider ingredientsProvider,
+                           SandwichDetailsProvider sandwichDetailsProvider,
                            MenuCallbacks callbacks, Context ctx) {
         if (callbacks == null) {
             throw new NullPointerException("Cannot be null");
         }
         mIngredientsProvider = ingredientsProvider;
+        mSandwichDetailsProvider = sandwichDetailsProvider;
         mCallbacks = callbacks;
         mContext = ctx;
         mRequester = new RequesterManager(this);
@@ -61,11 +65,18 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
     }
 
     @Override
+    public void selectCart() {
+        mCallbacks.onCartSelected();
+    }
+
+    @Override
     public void onResponse(ResponseType type, Object content) {
         switch (type) {
             case MENU:
                 try {
-                    mCallbacks.onShowSandwichList((List<Sandwich>) content);
+                    List<Sandwich> sandwichList = (List<Sandwich>) content;
+                    mSandwichDetailsProvider.addSandwichDetails(sandwichList);
+                    mCallbacks.onShowSandwichList(sandwichList);
                 } catch (ClassCastException e) {
                     mCallbacks.onError(mContext.getString(R.string.general_error_title),
                             mContext.getString(R.string.menu_error_msg));

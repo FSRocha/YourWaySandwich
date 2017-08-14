@@ -14,6 +14,13 @@ public class Sandwich {
     private float mPrice = 0;
     private String mIngredientsText = null;
 
+    public void cloneSandwich(Sandwich sandwich) {
+        id = sandwich.getId();
+        name = sandwich.getName();
+        ingredients = new ArrayList<>(sandwich.getIngredients());
+        image = sandwich.getImageUrl();
+    }
+
     public int getId() {
         return id;
     }
@@ -30,16 +37,19 @@ public class Sandwich {
         return image;
     }
 
+    public void setExtras(List<Integer> extras) {
+        this.extras = extras;
+        refresh();
+    }
+
     public void addExtraIngredient(Ingredient ingredient) {
         extras.add(ingredient.getId());
-        refreshIngredientsList();
-        refreshPrice();
+        refresh();
     }
 
     public void removeExtraIngredient(Ingredient ingredient) {
         extras.remove(ingredient.getId());
-        refreshIngredientsList();
-        refreshPrice();
+        refresh();
     }
 
     public boolean hasExtras() {
@@ -48,25 +58,21 @@ public class Sandwich {
 
     public float getPrice() {
         if (mPrice == 0) {
-            refreshPrice();
+            refresh();
         }
         return mPrice;
     }
 
     public String getIngredientsText() {
         if (mIngredientsText == null) {
-            refreshIngredientsList();
+            refresh();
         }
         return mIngredientsText;
     }
 
-    private void refreshIngredientsList() {
+    private void refresh() {
         PromotionsCalculator calculator = new PromotionsCalculator(ApplicationGlobal.getInstance());
         mIngredientsText = calculator.buildIngredientsList(ingredients, extras);
-    }
-
-    private void refreshPrice() {
-        PromotionsCalculator calculator = new PromotionsCalculator(ApplicationGlobal.getInstance());
         mPrice = calculator.calculatePrice(ingredients, extras);
     }
 

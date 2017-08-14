@@ -38,6 +38,6 @@ public interface YourWayMobileApi {
     Call<List<Promotion>> getPromotions();
 
     @GET("/api/pedido")
-    Call<List<Sandwich>> getCart();
+    Call<List<OrderedItem>> getCart();
 
 }

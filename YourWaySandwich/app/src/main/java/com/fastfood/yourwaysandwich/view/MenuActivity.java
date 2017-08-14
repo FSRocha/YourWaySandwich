@@ -35,13 +35,23 @@ public class MenuActivity extends AppCompatActivity implements MenuCallbacks,
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(this);
         mMenuPresenter = new MenuPresenter();
-        mMenuPresenter.createMenu(ApplicationGlobal.getInstance(), this, this);
+        mMenuPresenter.createMenu(ApplicationGlobal.getInstance(), ApplicationGlobal.getInstance(),
+                this, this);
         Button promotionsButton = (Button) findViewById(R.id.promotions_button);
         promotionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mMenuPresenter != null) {
                     mMenuPresenter.selectPromotions();
+                }
+            }
+        });
+        Button cartButton = (Button) findViewById(R.id.cart_button);
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMenuPresenter != null) {
+                    mMenuPresenter.selectCart();
                 }
 
             }
@@ -75,8 +85,14 @@ public class MenuActivity extends AppCompatActivity implements MenuCallbacks,
 
     @Override
     public void onPromotionsSelected() {
-        Intent promotionsActivity = new Intent(MenuActivity.this, PromotionsActivity.class);
+        Intent promotionsActivity = new Intent(this, PromotionsActivity.class);
         startActivity(promotionsActivity);
+    }
+
+    @Override
+    public void onCartSelected() {
+        Intent cartActivity = new Intent(this, CartActivity.class);
+        startActivity(cartActivity);
     }
 
     @Override

@@ -113,7 +113,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
 
     @Override
     public void getSandwichIngredients(int sandwichId) {
-        Log.d(LOG_TAG, "getSandwichIngredients called from client");
+        Log.d(LOG_TAG, "getSandwichDetails called from client");
         mRequestQueue.queueRequest(new SandwichIngredientsRequest(sandwichId));
     }
 
@@ -425,14 +425,14 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
     }
 
     private void getCartImpl() {
-        Call<List<Sandwich>> call = getMobileApiAccess().getCart();
-        call.enqueue(new Callback<List<Sandwich>>() {
+        Call<List<OrderedItem>> call = getMobileApiAccess().getCart();
+        call.enqueue(new Callback<List<OrderedItem>>() {
             @Override
-            public void onResponse(Call<List<Sandwich>> call, Response<List<Sandwich>> response) {
+            public void onResponse(Call<List<OrderedItem>> call, Response<List<OrderedItem>> response) {
                 int code = response.code();
                 switch (code) {
                     case HttpsURLConnection.HTTP_OK:
-                        List<Sandwich> resp = response.body();
+                        List<OrderedItem> resp = response.body();
                         if (resp != null) {
                             if (!resp.isEmpty()) {
                                 notifyListener(ResponseType.CART, resp);
@@ -453,7 +453,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             }
 
             @Override
-            public void onFailure(Call<List<Sandwich>> call, Throwable t) {
+            public void onFailure(Call<List<OrderedItem>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
                 notifyListener(ResponseType.CART_ERROR, ErrorCode.GENERAL_ERROR);

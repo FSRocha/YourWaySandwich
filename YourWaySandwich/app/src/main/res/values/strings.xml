@@ -12,4 +12,7 @@
     <string name="order_button_txt">Pedir</string>
     <string name="add_extras_button_txt">Customizar</string>
     <string name="promotions_error_msg">Falha ao receber as promoções</string>
+    <string name="cart_error_msg">Falha ao consultar pedido</string>
+    <string name="car_title">Lista de pedidos</string>
+    <string name="total_txt">TOTAL</string>
 </resources>

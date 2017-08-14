@@ -13,4 +13,6 @@ public interface MenuCallbacks {
     void onSandwichSelected();
 
     void onPromotionsSelected();
+
+    void onCartSelected();
 }
