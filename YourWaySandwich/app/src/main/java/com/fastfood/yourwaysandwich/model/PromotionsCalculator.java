@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-class PromotionsCalculator {
+public class PromotionsCalculator {
 
     // Number of beef portions to discount 1 portion
     private static int BEEF_PORTIONS_PER_DISCOUNT = 3;
@@ -25,11 +25,11 @@ class PromotionsCalculator {
 
     private float IS_LIGHT_DISCOUNT = 0.9f;
 
-    PromotionsCalculator(AvailableIngredientsProvider ingredientsHolder) {
-        mIngredientsProvider = ingredientsHolder;
+    public PromotionsCalculator(AvailableIngredientsProvider ingredientsProvider) {
+        mIngredientsProvider = ingredientsProvider;
     }
 
-    float calculatePrice(List<Integer> ingredients, List<Integer> extras) {
+    public float calculatePrice(List<Integer> ingredients, List<Integer> extras) {
         List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         if (availableIngredients != null && !availableIngredients.isEmpty()) {
             List<Integer> allIngredients = new ArrayList<>(ingredients);
@@ -77,7 +77,7 @@ class PromotionsCalculator {
         return "";
     }
 
-    String buildIngredientsList(List<Integer> ingredients, List<Integer> extras) {
+    public String buildIngredientsList(List<Integer> ingredients, List<Integer> extras) {
         List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         if (availableIngredients != null && !availableIngredients.isEmpty()) {
             StringBuilder list = new StringBuilder();
@@ -100,9 +100,9 @@ class PromotionsCalculator {
         int lettuceId = -1;
         int baconId = -1;
         for (Ingredient ingredient : availableIngredients) {
-            if (TextUtils.equals(ingredient.getName(), LETTUCE_PORTION_NAME)) {
+            if (ingredient.getName().equals(LETTUCE_PORTION_NAME)) {
                 lettuceId = ingredient.getId();
-            } else if (TextUtils.equals(ingredient.getName(), BACON_PORTION_NAME)) {
+            } else if (ingredient.getName().equals(BACON_PORTION_NAME)) {
                 baconId = ingredient.getId();
             }
             if (lettuceId != -1 && baconId != -1) {
@@ -114,18 +114,18 @@ class PromotionsCalculator {
     }
 
     private float calculateDiscountPerPortions(List<Integer> allIngredients, String portionName,
-                                               int portionsPerDiscount) {
+                                               float portionsPerDiscount) {
         List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         int portionId = -1;
         float portionPrice = -1;
         for (Ingredient ingredient : availableIngredients) {
-            if (TextUtils.equals(ingredient.getName(), portionName)) {
+            if (ingredient.getName().equals(portionName)) {
                 portionId = ingredient.getId();
                 portionPrice = ingredient.getPrice();
             }
         }
         if (portionId != -1 && portionPrice != -1) {
-            int numberOfPortions = 0;
+            float numberOfPortions = 0;
             for (int ingredientId : allIngredients) {
                 if (ingredientId == portionId) {
                     numberOfPortions++;
