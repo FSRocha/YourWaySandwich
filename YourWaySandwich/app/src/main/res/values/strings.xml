@@ -5,4 +5,6 @@
     <string name="menu_title">Cardápio</string>
     <string name="promotions_button_txt">Promoções</string>
     <string name="cart_button_txt">Pedido</string>
+    <string name="menu_error_msg">Falha ao acessar cardápio</string>
+    <string name="available_ingredients_error_msg">Falha ao acessar preços</string>
 </resources>

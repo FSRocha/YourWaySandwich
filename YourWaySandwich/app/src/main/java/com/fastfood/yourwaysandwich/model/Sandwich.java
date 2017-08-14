@@ -1,5 +1,9 @@
 package com.fastfood.yourwaysandwich.model;
 
+import android.util.Log;
+
+import com.fastfood.yourwaysandwich.ApplicationGlobal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +12,8 @@ public class Sandwich {
     public String name;
     public List<Integer> ingredients;
     public String image;
-    private boolean mHasExtras = false;
     private List<Integer> extras = new ArrayList<>();
-    private float mPrice =  0;
+    private float mPrice = 0;
     private String mIngredientsText = null;
 
     public int getId() {
@@ -42,7 +45,7 @@ public class Sandwich {
     }
 
     public boolean hasExtras() {
-        return extras.isEmpty();
+        return !extras.isEmpty();
     }
 
     public float getPrice() {
@@ -60,10 +63,12 @@ public class Sandwich {
     }
 
     private void refreshIngredientsList() {
-        // TODO Implement based on pre loaded data (requested at the app initialization)
+        PromotionsCalculator calculator = new PromotionsCalculator(ApplicationGlobal.getInstance());
+        mIngredientsText = calculator.buildIngredientsList(ingredients, extras);
     }
 
-    private void refreshPrice(){
-        // TODO Implement based on pre loaded data (requested at the app initialization)
+    private void refreshPrice() {
+        PromotionsCalculator calculator = new PromotionsCalculator(ApplicationGlobal.getInstance());
+        mPrice = calculator.calculatePrice(ingredients, extras);
     }
 }

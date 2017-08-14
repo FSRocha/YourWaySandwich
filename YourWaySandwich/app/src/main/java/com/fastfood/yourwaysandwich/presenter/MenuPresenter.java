@@ -3,7 +3,9 @@ package com.fastfood.yourwaysandwich.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import com.fastfood.yourwaysandwich.ApplicationGlobal;
 import com.fastfood.yourwaysandwich.R;
+import com.fastfood.yourwaysandwich.model.Ingredient;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.service.RequesterManager;
 import com.fastfood.yourwaysandwich.model.service.ResponseListener;
@@ -31,8 +33,8 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
         mCallbacks = callbacks;
         mContext = ctx;
         mRequester = new RequesterManager(this);
-        mRequester.getMenu();
         mRequester.getAvailableIngredients();
+        mRequester.getMenu();
     }
 
     @Override
@@ -50,10 +52,26 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
                     mCallbacks.onShowSandwichList((List<Sandwich>) content);
                 } catch (ClassCastException e) {
                     mCallbacks.onError(mContext.getString(R.string.general_error_title),
-                            mContext.getString(R.string.invalid_response_error_msg));
+                            mContext.getString(R.string.menu_error_msg));
                 }
                 break;
             case AVAILABLE_INGREDIENTS:
+                try {
+                    ApplicationGlobal app = ApplicationGlobal.getInstance();
+                    app.setAvailableIngredients((List<Ingredient>) content);
+                } catch (ClassCastException e) {
+                    mCallbacks.onError(mContext.getString(R.string.general_error_title),
+                            mContext.getString(R.string.available_ingredients_error_msg));
+                }
+                break;
+            case MENU_ERROR:
+                mCallbacks.onError(mContext.getString(R.string.general_error_title),
+                        mContext.getString(R.string.menu_error_msg));
+                break;
+            case AVAILABLE_INGREDIENTS_ERROR:
+                Log.e(LOG_TAG, "Failed getting ingredients");
+                mCallbacks.onError(mContext.getString(R.string.general_error_title),
+                        mContext.getString(R.string.available_ingredients_error_msg));
                 break;
             default:
                 Log.e(LOG_TAG, "Unexpected response");

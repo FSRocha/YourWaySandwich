@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="X-Egg Bacon"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,7 +45,6 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:layout_margin="1dp"
-                android:text="R$ 25,00"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 
@@ -56,8 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/card_top_panel"
             android:background="@color/card_details_background"
-            android:padding="1dp"
-            android:text="Pão com gergelim, alface, ovo, bacon, hambúrguer de carne e queijo" />
+            android:padding="1dp" />
 
         <ImageView
             android:id="@+id/extra_batch_img"

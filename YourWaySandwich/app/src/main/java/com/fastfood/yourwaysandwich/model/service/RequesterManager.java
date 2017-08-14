@@ -161,7 +161,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
      * @param content An object containing the payload content of the response, it should be casted
      *                by the listener to the proper Object kind, depending on the response type.
      */
-    void notifyListener(ResponseType type, Object content) {
+    private void notifyListener(ResponseType type, Object content) {
         Log.d(LOG_TAG, "notifyListener");
         mCurrentRequest = null;
 
@@ -194,17 +194,17 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                                 notifyListener(ResponseType.MENU, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.MENU_ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.MENU_ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.MENU_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -212,7 +212,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<List<Sandwich>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.MENU_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -231,17 +231,17 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                                 notifyListener(ResponseType.SANDWICH_INGREDIENTS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.SANDWICH_INGREDIENTS_ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.SANDWICH_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.SANDWICH_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -249,7 +249,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.SANDWICH_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -267,13 +267,13 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                             notifyListener(ResponseType.SANDWICH_DETAILS, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.SANDWICH_DETAILS_ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.SANDWICH_DETAILS_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -281,7 +281,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<Sandwich> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.SANDWICH_DETAILS_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -300,17 +300,17 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                                 notifyListener(ResponseType.AVAILABLE_INGREDIENTS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.AVAILABLE_INGREDIENTS_ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.AVAILABLE_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.AVAILABLE_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -318,7 +318,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.AVAILABLE_INGREDIENTS_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -336,13 +336,13 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                             notifyListener(ResponseType.ORDERED_SANDWICH, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.ORDERED_SANDWICH_ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ORDERED_SANDWICH_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -350,7 +350,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<OrderedItem> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ORDERED_SANDWICH_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -368,13 +368,13 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                             notifyListener(ResponseType.ORDERED_CUSTOM_SANDWICH, resp);
                         } else {
                             Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                            notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                            notifyListener(ResponseType.ORDERED_CUSTOM_SANDWICH_ERROR, ErrorCode.EMPTY_RESPONSE);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.ORDERED_CUSTOM_SANDWICH_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -382,7 +382,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<OrderedItem> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.ORDERED_CUSTOM_SANDWICH_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -401,17 +401,17 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                                 notifyListener(ResponseType.PROMOTIONS, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.PROMOTIONS_ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.PROMOTIONS_ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.PROMOTIONS_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -419,7 +419,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<List<Promotion>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.PROMOTIONS_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }
@@ -438,17 +438,17 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
                                 notifyListener(ResponseType.CART, resp);
                             } else {
                                 Log.d(LOG_TAG, "Failed EMPTY_RESPONSE");
-                                notifyListener(ResponseType.ERROR, ErrorCode.EMPTY_RESPONSE);
+                                notifyListener(ResponseType.CART_ERROR, ErrorCode.EMPTY_RESPONSE);
                             }
                         } else {
                             Log.d(LOG_TAG, "Failed NULL response");
-                            notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                            notifyListener(ResponseType.CART_ERROR, ErrorCode.GENERAL_ERROR);
                         }
                         break;
                     default:
                         Log.d(LOG_TAG, "Response code: " + response.code());
                         Log.d(LOG_TAG, "Response message: " + response.message());
-                        notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                        notifyListener(ResponseType.CART_ERROR, ErrorCode.GENERAL_ERROR);
                 }
             }
 
@@ -456,7 +456,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
             public void onFailure(Call<List<Sandwich>> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure");
                 Log.d(LOG_TAG, "Throwable " + t.getMessage());
-                notifyListener(ResponseType.ERROR, ErrorCode.GENERAL_ERROR);
+                notifyListener(ResponseType.CART_ERROR, ErrorCode.GENERAL_ERROR);
             }
         });
     }

@@ -18,10 +18,12 @@ class SandwichListAdapter extends BaseAdapter {
 
     private LayoutInflater mLayoutInflater;
     private ArrayList<Sandwich> mSandwichList;
+    private Context mContext;
 
     SandwichListAdapter(Context context, ArrayList<Sandwich> list) {
         mSandwichList = list;
-        mLayoutInflater = LayoutInflater.from(context);
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     void updateList(List<Sandwich> newList) {
@@ -61,7 +63,7 @@ class SandwichListAdapter extends BaseAdapter {
 
         Sandwich item = mSandwichList.get(position);
         viewHolder.mSandwichName.setText(item.getName());
-        viewHolder.mSandwichPrice.setText(String.valueOf(item.getPrice()));
+        viewHolder.mSandwichPrice.setText(formatPrice(item.getPrice()));
         viewHolder.mSandwichIngredients.setText(item.getIngredientsText());
         viewHolder.mExtraBatch.setVisibility(item.hasExtras()?View.VISIBLE:View.GONE);
 
@@ -77,5 +79,9 @@ class SandwichListAdapter extends BaseAdapter {
         TextView mSandwichIngredients;
         View mExtraBatch;
         ImageView mSandwichPicture;
+    }
+
+    private String formatPrice(float price) {
+        return String.format("R$ %.2f", price);
     }
 }
