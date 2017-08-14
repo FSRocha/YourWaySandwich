@@ -57,6 +57,7 @@ class SandwichListAdapter extends BaseAdapter {
             viewHolder.mSandwichIngredients = (TextView) convertView.findViewById(R.id.sandwich_ingredients);
             viewHolder.mExtraBatch = convertView.findViewById(R.id.extra_batch_img);
             viewHolder.mSandwichPicture = (ImageView) convertView.findViewById(R.id.sandwich_picture);
+            convertView.setTag(viewHolder);
         } else {
             viewHolder = (ListViewHolder) convertView.getTag();
         }

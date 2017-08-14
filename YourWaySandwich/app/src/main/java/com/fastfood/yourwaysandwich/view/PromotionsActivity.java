@@ -22,8 +22,8 @@ public class PromotionsActivity extends AppCompatActivity implements PromotionsC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
-        ListView mListView = (ListView) findViewById(R.id.sandwich_list);
+        setContentView(R.layout.activity_promotions);
+        ListView mListView = (ListView) findViewById(R.id.promotions_list);
         mListAdapter = new PromotionsListAdapter(this, new ArrayList<Promotion>());
         mListView.setAdapter(mListAdapter);
         mPromotionsPresenter = new PromotionsPresenter();

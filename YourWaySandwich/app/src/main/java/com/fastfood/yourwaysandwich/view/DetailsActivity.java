@@ -53,7 +53,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsCallbac
         mExtraBatch.setVisibility(sandwich.hasExtras() ? View.VISIBLE : View.GONE);
 
         // TODO Implement imageDownloaderTask
-        // new ImageDownloaderTask(viewHolder.mSandwichPicture).execute(item.getImageUrl());
+        // new ImageDownloaderTask(mSandwichPicture).execute(sandwich.getImageUrl());
     }
 
     @Override

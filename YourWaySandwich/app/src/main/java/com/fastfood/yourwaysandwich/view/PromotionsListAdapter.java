@@ -53,6 +53,7 @@ class PromotionsListAdapter extends BaseAdapter {
             viewHolder = new ListViewHolder();
             viewHolder.mPromotionName = (TextView) convertView.findViewById(R.id.promotion_name);
             viewHolder.mPromotionDescription = (TextView) convertView.findViewById(R.id.promotion_description);
+            convertView.setTag(viewHolder);
         } else {
             viewHolder = (ListViewHolder) convertView.getTag();
         }
