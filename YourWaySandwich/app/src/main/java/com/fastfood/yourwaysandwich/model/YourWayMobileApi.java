@@ -32,7 +32,7 @@ public interface YourWayMobileApi {
     Call<OrderedItem> orderSandwich(@Path("id_lanche") int sandwichId);
 
     @PUT("/api/pedido/{id_lanche}")
-    Call<OrderedItem> orderCustomSandwich(@Path("id_lanche") int sandwichId, @Body int[] extras);
+    Call<OrderedItem> orderCustomSandwich(@Path("id_lanche") int sandwichId, @Body Extras extras);
 
     @GET("/api/promocao")
     Call<List<Promotion>> getPromotions();

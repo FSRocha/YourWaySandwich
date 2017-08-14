@@ -1,6 +1,8 @@
 package com.fastfood.yourwaysandwich.model.service;
 
 
+import java.util.List;
+
 /**
  * Interface to wrap the access to the Your Way API services into asynchronous calls
  **/
@@ -41,9 +43,9 @@ interface YourWayApi {
      * Add the specified sandwich which was customized to the user cart
      *
      * @param sandwichId The sandwich id which was customized to be
-     * @param extras The list of extra ingredients to be added
+     * @param extras     The list of extra ingredients to be added
      */
-    void orderCustomSandwich(int sandwichId, int[] extras);
+    void orderCustomSandwich(int sandwichId, List<Integer> extras);
 
     /**
      * Request the promotion descriptions currently available

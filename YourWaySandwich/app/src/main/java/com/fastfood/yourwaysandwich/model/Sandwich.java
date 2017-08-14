@@ -76,11 +76,7 @@ public class Sandwich {
         mPrice = calculator.calculatePrice(ingredients, extras);
     }
 
-    public int[] getExtrasAsArray() {
-        int[] extrasArray = new int[extras.size()];
-        for (int i = 0; i < extras.size(); i++) {
-            extrasArray[i] = extras.get(i);
-        }
-        return extrasArray;
+    public List<Integer> getExtras() {
+        return extras;
     }
 }

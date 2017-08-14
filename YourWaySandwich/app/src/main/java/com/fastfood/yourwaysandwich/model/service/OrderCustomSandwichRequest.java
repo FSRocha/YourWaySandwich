@@ -1,12 +1,14 @@
 package com.fastfood.yourwaysandwich.model.service;
 
+import java.util.List;
+
 class OrderCustomSandwichRequest extends Request {
 
     private int sandwichId;
 
-    private int[] extras;
+    private List<Integer> extras;
 
-    OrderCustomSandwichRequest(int sandwichId, int[] extras) {
+    OrderCustomSandwichRequest(int sandwichId, List<Integer> extras) {
         super(RequestType.ORDER_CUSTOM_SANDWICH);
         this.sandwichId = sandwichId;
         this.extras = extras;
@@ -16,7 +18,7 @@ class OrderCustomSandwichRequest extends Request {
         return sandwichId;
     }
 
-    public int[] getExtras() {
+    public List<Integer> getExtras() {
         return extras;
     }
 }

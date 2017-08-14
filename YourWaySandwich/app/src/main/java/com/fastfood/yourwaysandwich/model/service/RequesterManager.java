@@ -2,12 +2,14 @@ package com.fastfood.yourwaysandwich.model.service;
 
 import android.util.Log;
 
+import com.fastfood.yourwaysandwich.model.Extras;
 import com.fastfood.yourwaysandwich.model.Ingredient;
 import com.fastfood.yourwaysandwich.model.OrderedItem;
 import com.fastfood.yourwaysandwich.model.Promotion;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.YourWayMobileApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -62,7 +64,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
 
             mCurrentRequest = mRequestQueue.getRequestFromQueue();
             int sandwichId;
-            int[] extras;
+            List<Integer> extras;
 
             switch (mCurrentRequest.getType()) {
                 case GET_MENU:
@@ -136,7 +138,7 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
     }
 
     @Override
-    public void orderCustomSandwich(int sandwichId, int[] extras) {
+    public void orderCustomSandwich(int sandwichId, List<Integer> extras) {
         Log.d(LOG_TAG, "orderCustomSandwich called from client");
         mRequestQueue.queueRequest(new OrderCustomSandwichRequest(sandwichId, extras));
     }
@@ -355,8 +357,10 @@ public class RequesterManager implements YourWayApi, OnRequestQueueListener {
         });
     }
 
-    private void orderCustomSandwichImpl(int sandwichId, int[] extras) {
-        Call<OrderedItem> call = getMobileApiAccess().orderCustomSandwich(sandwichId, extras);
+    private void orderCustomSandwichImpl(int sandwichId, List<Integer> extras) {
+        Extras extrasIngredients = new Extras();
+        extrasIngredients.extras = new ArrayList<>(extras);
+        Call<OrderedItem> call = getMobileApiAccess().orderCustomSandwich(sandwichId, extrasIngredients);
         call.enqueue(new Callback<OrderedItem>() {
             @Override
             public void onResponse(Call<OrderedItem> call, Response<OrderedItem> response) {

@@ -53,7 +53,7 @@ public class DetailsPresenter implements DetailsOperations, ResponseListener {
     public void orderSandwich() {
         Sandwich sandwich = mSelectedSandwichProvider.getSelectedSandwich();
         if (sandwich.hasExtras()) {
-            mRequester.orderCustomSandwich(sandwich.getId(), sandwich.getExtrasAsArray());
+            mRequester.orderCustomSandwich(sandwich.getId(), sandwich.getExtras());
         } else {
             mRequester.orderSandwich(sandwich.getId());
         }
