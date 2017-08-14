@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,26 @@ public class DetailsActivity extends AppCompatActivity implements DetailsCallbac
         mExtraBatch = (ImageView) findViewById(R.id.extra_batch_img);
         mDetailsPresenter = new DetailsPresenter();
         mDetailsPresenter.createDetails(ApplicationGlobal.getInstance(), this, this);
+
+        Button orderButton = (Button) findViewById(R.id.order_button);
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDetailsPresenter != null) {
+                    mDetailsPresenter.orderSandwich();
+                }
+            }
+        });
+
+        Button customizeButton = (Button) findViewById(R.id.customize_button);
+        customizeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDetailsPresenter != null) {
+                    mDetailsPresenter.customizeSandwich();
+                }
+            }
+        });
     }
 
     @Override

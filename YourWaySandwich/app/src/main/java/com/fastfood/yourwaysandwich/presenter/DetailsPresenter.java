@@ -57,7 +57,11 @@ public class DetailsPresenter implements DetailsOperations, ResponseListener {
         } else {
             mRequester.orderSandwich(sandwich.getId());
         }
-        mRequester.orderSandwich(mSelectedSandwichProvider.getSelectedSandwich().getId());
+    }
+
+    @Override
+    public void customizeSandwich() {
+
     }
 
     @Override

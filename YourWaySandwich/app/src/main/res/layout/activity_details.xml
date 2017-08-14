@@ -14,14 +14,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/promotions_button"
+            android:id="@+id/customize_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_extras_button_txt" />
 
         <Button
-            android:id="@+id/cart_button"
+            android:id="@+id/order_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

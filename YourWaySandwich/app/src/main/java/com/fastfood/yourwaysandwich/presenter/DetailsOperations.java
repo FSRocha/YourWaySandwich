@@ -14,6 +14,8 @@ public interface DetailsOperations {
 
     void orderSandwich();
 
+    void customizeSandwich();
+
     void addExtraIngredients(int[] extras);
 
     void removeExtraIngredients(int[] extras);
