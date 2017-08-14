@@ -1,7 +1,5 @@
 package com.fastfood.yourwaysandwich.model;
 
-import android.util.Log;
-
 import com.fastfood.yourwaysandwich.ApplicationGlobal;
 
 import java.util.ArrayList;
@@ -70,5 +68,13 @@ public class Sandwich {
     private void refreshPrice() {
         PromotionsCalculator calculator = new PromotionsCalculator(ApplicationGlobal.getInstance());
         mPrice = calculator.calculatePrice(ingredients, extras);
+    }
+
+    public int[] getExtrasAsArray() {
+        int[] extrasArray = new int[extras.size()];
+        for (int i = 0; i < extras.size(); i++) {
+            extrasArray[i] = extras.get(i);
+        }
+        return extrasArray;
     }
 }

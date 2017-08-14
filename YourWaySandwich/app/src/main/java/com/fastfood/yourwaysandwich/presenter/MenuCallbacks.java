@@ -9,4 +9,6 @@ public interface MenuCallbacks {
     void onShowSandwichList(List<Sandwich> sandwichList);
 
     void onError(String errorTitle, String errorMsg);
+
+    void onSandwichSelected();
 }

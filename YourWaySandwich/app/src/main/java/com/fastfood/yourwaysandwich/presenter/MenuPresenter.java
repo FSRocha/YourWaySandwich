@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.fastfood.yourwaysandwich.ApplicationGlobal;
 import com.fastfood.yourwaysandwich.R;
+import com.fastfood.yourwaysandwich.model.AvailableIngredientsProvider;
 import com.fastfood.yourwaysandwich.model.Ingredient;
 import com.fastfood.yourwaysandwich.model.Sandwich;
 import com.fastfood.yourwaysandwich.model.service.RequesterManager;
@@ -24,12 +25,15 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
 
     private RequesterManager mRequester;
     private Context mContext;
+    private AvailableIngredientsProvider mIngredientsProvider;
 
     @Override
-    public void createMenu(MenuCallbacks callbacks, Context ctx) {
+    public void createMenu(AvailableIngredientsProvider ingredientsProvider,
+                           MenuCallbacks callbacks, Context ctx) {
         if (callbacks == null) {
             throw new NullPointerException("Cannot be null");
         }
+        mIngredientsProvider = ingredientsProvider;
         mCallbacks = callbacks;
         mContext = ctx;
         mRequester = new RequesterManager(this);
@@ -45,6 +49,13 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
     }
 
     @Override
+    public void selectSandwich(Sandwich selectedSandwich) {
+        ApplicationGlobal app = ApplicationGlobal.getInstance();
+        app.setSelectedSandwich(selectedSandwich);
+        mCallbacks.onSandwichSelected();
+    }
+
+    @Override
     public void onResponse(ResponseType type, Object content) {
         switch (type) {
             case MENU:
@@ -57,8 +68,7 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
                 break;
             case AVAILABLE_INGREDIENTS:
                 try {
-                    ApplicationGlobal app = ApplicationGlobal.getInstance();
-                    app.setAvailableIngredients((List<Ingredient>) content);
+                    mIngredientsProvider.setAvailableIngredients((List<Ingredient>) content);
                 } catch (ClassCastException e) {
                     mCallbacks.onError(mContext.getString(R.string.general_error_title),
                             mContext.getString(R.string.available_ingredients_error_msg));
@@ -78,6 +88,5 @@ public class MenuPresenter implements MenuOperations, ResponseListener {
                 mCallbacks.onError(mContext.getString(R.string.general_error_title),
                         mContext.getString(R.string.invalid_response_error_msg));
         }
-
     }
 }

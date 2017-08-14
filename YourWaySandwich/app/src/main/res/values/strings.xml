@@ -7,4 +7,8 @@
     <string name="cart_button_txt">Pedido</string>
     <string name="menu_error_msg">Falha ao acessar cardápio</string>
     <string name="available_ingredients_error_msg">Falha ao acessar preços</string>
+    <string name="order_sandwich_error_message">Falha salvando pedido</string>
+    <string name="order_success_msg">Lanche adicionado ao carrinho!</string>
+    <string name="order_button_txt">Pedir</string>
+    <string name="add_extras_button_txt">Customizar</string>
 </resources>

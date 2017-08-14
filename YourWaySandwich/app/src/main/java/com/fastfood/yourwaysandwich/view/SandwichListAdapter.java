@@ -50,7 +50,7 @@ class SandwichListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewHolder viewHolder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.sandwich_list_item, null);
+            convertView = mLayoutInflater.inflate(R.layout.sandwich_item, null);
             viewHolder = new ListViewHolder();
             viewHolder.mSandwichName = (TextView) convertView.findViewById(R.id.sandwich_name);
             viewHolder.mSandwichPrice = (TextView) convertView.findViewById(R.id.sandwich_price);

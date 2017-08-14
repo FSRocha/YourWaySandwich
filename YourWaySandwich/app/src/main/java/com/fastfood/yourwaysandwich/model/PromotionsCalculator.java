@@ -21,16 +21,16 @@ class PromotionsCalculator {
 
     private static String BACON_PORTION_NAME = "Bacon";
 
-    private AvailableIngredientsHolder mIngredientsHolder;
+    private AvailableIngredientsProvider mIngredientsProvider;
 
     private float IS_LIGHT_DISCOUNT = 0.9f;
 
-    PromotionsCalculator(AvailableIngredientsHolder ingredientsHolder) {
-        mIngredientsHolder = ingredientsHolder;
+    PromotionsCalculator(AvailableIngredientsProvider ingredientsHolder) {
+        mIngredientsProvider = ingredientsHolder;
     }
 
     float calculatePrice(List<Integer> ingredients, List<Integer> extras) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         if (availableIngredients != null && !availableIngredients.isEmpty()) {
             List<Integer> allIngredients = new ArrayList<>(ingredients);
             allIngredients.addAll(extras);
@@ -58,7 +58,7 @@ class PromotionsCalculator {
     }
 
     private float getIngredientPrice(int ingredientId) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         for (Ingredient ingredient : availableIngredients) {
             if (ingredient.getId() == ingredientId) {
                 return ingredient.getPrice();
@@ -68,7 +68,7 @@ class PromotionsCalculator {
     }
 
     private String getIngredientName(int ingredientId) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         for (Ingredient ingredient : availableIngredients) {
             if (ingredient.getId() == ingredientId) {
                 return ingredient.getName();
@@ -78,7 +78,7 @@ class PromotionsCalculator {
     }
 
     String buildIngredientsList(List<Integer> ingredients, List<Integer> extras) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         if (availableIngredients != null && !availableIngredients.isEmpty()) {
             StringBuilder list = new StringBuilder();
             List<Integer> allIngredients = new ArrayList<>(ingredients);
@@ -96,7 +96,7 @@ class PromotionsCalculator {
     }
 
     private boolean isLight(List<Integer> allIngredients) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         int lettuceId = -1;
         int baconId = -1;
         for (Ingredient ingredient : availableIngredients) {
@@ -115,7 +115,7 @@ class PromotionsCalculator {
 
     private float calculateDiscountPerPortions(List<Integer> allIngredients, String portionName,
                                                int portionsPerDiscount) {
-        List<Ingredient> availableIngredients = mIngredientsHolder.getAvailableIngredients();
+        List<Ingredient> availableIngredients = mIngredientsProvider.getAvailableIngredients();
         int portionId = -1;
         float portionPrice = -1;
         for (Ingredient ingredient : availableIngredients) {

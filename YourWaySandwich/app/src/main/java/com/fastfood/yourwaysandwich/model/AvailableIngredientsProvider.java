@@ -2,7 +2,7 @@ package com.fastfood.yourwaysandwich.model;
 
 import java.util.List;
 
-public interface AvailableIngredientsHolder {
+public interface AvailableIngredientsProvider {
 
     List<Ingredient> getAvailableIngredients();
 
